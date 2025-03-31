@@ -12,10 +12,46 @@ export class CatalogService {
     }
 
 
-    createProduct(input: any){};
-    updateProduct(input: any){};
-    getProducts(limit: number, offset: number){};
-    getProduct(id: number){};
-    deleteProduct(id: any){};
+    async createProduct(input: any){
+
+        const data = await this._repository.create(input);
+
+        if(!data.id){
+            throw new Error("Unable to create product");
+        }
+        return data;
+
+    };
+    async updateProduct(input: any){
+        const data = await this._repository.update(input);
+
+        if(!data.id){
+            throw new Error("Unable to update product");
+        }
+        return data;
+    };
+    async getProducts(limit: number, offset: number){
+        const products = await this._repository.find(limit, offset);
+        return products;
+    };
+    async getProduct(id: number){
+        const product = await this._repository.findOne(id);
+        console.log("get product id", product);
+        
+        if(!product.id){
+            throw new Error("Product not found");
+        }
+        return product;
+    };
+    
+    async deleteProduct(id: any){
+        const data = await this._repository.delete(id);
+        console.log("delete product id", data);
+
+        if(!data.id){
+            throw new Error("Unable to delete product");
+        }
+        return data;
+    };
 
 }
