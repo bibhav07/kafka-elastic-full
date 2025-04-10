@@ -1,6 +1,9 @@
+import { DB } from "../db/dbConnection";
+import { carts } from "../db/schema";
 import { CartRepositoryType } from "../types/repository-types"
 
 const createCart = async (): Promise<{}> => {
+    const result = await DB.insert(carts).values({customerId:7}).returning({cartId: carts.id});
     // Logic to create a cart
     return Promise.resolve({"message": "Cart created successfully"});
 }
