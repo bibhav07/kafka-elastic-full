@@ -3,6 +3,7 @@ import { CatalogService } from "../services/catalog.service";
 import { CatalogRepository } from "../repository/catalog.repository";
 import { CreateProductRequest, UpdateProductRequest } from "../dto/product.dto";
 import { RequestValidator } from "../utils/fixtures/requestValidators";
+import { asyncHandler } from "../utils/fixtures/asynchandler";
 
 const router = express.Router();
 export const catalogService = new CatalogService(new CatalogRepository());
@@ -59,18 +60,17 @@ router.get("/products", async (req: Request, res: Response, next: NextFunction) 
      }
 }  )
 
+
 //fetch single products
-router.get("/product/:id", async (req: Request, res: Response, next: NextFunction) :Promise<any>=> {
-     const id = parseInt(req.params.id) || 0;
-     
-     try {
-         const result = await catalogService.getProduct(id);
-         return res.status(200).json(result);
-     } catch (error) {
-         const err = error as Error;
-         return res.status(500).json(err.message);
-     }
- });
+router.get("/product/:id", 
+    asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+      const id = parseInt(req.params.id) || 0;
+  
+      const result = await catalogService.getProduct(id); // If this throws, asyncHandler catches it
+      return res.status(200).json(result);
+    })
+  );
+  
  
  router.delete("/product/:id",   async (req: Request, res: Response, next: NextFunction) : Promise<any>=> {
      const id = parseInt(req.params.id) || 0;

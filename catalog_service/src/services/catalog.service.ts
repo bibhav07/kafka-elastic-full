@@ -1,4 +1,5 @@
 import { ICatalogRepository } from "../interface/catalogRepository.interface";
+import { NotFoundError } from "../utils";
 
 export class CatalogService {
 
@@ -35,13 +36,17 @@ export class CatalogService {
         return products;
     };
     async getProduct(id: number){
-        const product = await this._repository.findOne(id);
-        console.log("get product id", product);
+        // const product = await this._repository.findOne(id);
+        // console.log("get product id", product);
         
-        if(!product.id){
-            throw new Error("Product not found");
-        }
-        return product;
+        // if(!product.id){
+        //     throw new NotFoundError("product not found")
+            
+        // }
+        // return product;
+        console.log("in here baby", id)
+        throw new NotFoundError("product not found here")
+
     };
     
     async deleteProduct(id: any){

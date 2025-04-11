@@ -12,7 +12,7 @@ export const CreateCart = async (input: any, repo: CartRepositoryType) => {
         throw new Error("Product not available in stock");
     };
 
-    //check if product already exists in cart
+    //check if product already exists in cart |  //this below repo.findCartByProductId is checking if given item exists in cart or not, if it exists then return the line item, otherwise return null
     const lineItem = await repo.findCartByProductId(input.customerId, input.productId);
 
     if(lineItem){

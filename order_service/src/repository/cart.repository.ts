@@ -81,6 +81,7 @@ const clearCartData = async (id: number): Promise<Boolean> => {
 
 const findCartByProductId = async ( customerId: number, productId: number) : Promise<CartLineItem> => {
     
+    //it will return cart with it's line items
     const cart = await DB.query.carts.findFirst({
         where: (carts, { eq }) => eq(carts.customerId, customerId),
         with: {
@@ -88,7 +89,7 @@ const findCartByProductId = async ( customerId: number, productId: number) : Pro
         },
       });
       
-      //it will return cart with it's line items
+      //checking if given item exists in cart or not, if it exists then return the line item, otherwise return null
       const lineItem = cart?.lineItems.find((item) => item.productId === productId);
       return lineItem as CartLineItem;
 

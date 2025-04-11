@@ -30,7 +30,8 @@ export const HandleErrorWithLogger = (
             logger.warn("Error: ", error.message);
         }
 
-        res.status(status).json(data);
+
+        res.status(status).json({message: data, status});
         return;
 
 }

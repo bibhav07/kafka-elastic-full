@@ -8,16 +8,20 @@ const router = express.Router();
 const repo = repository.CartRepository
 
 router.post('/cart', async (req: Request, res: Response, next: NextFunction) => {
-
-    const error = ValidateRequest<CartRequestInput>(req.body, CartRequestSchema);
-    if (error) {
-         res.status(400).json({ message: 'Bad Request', error });
-         return;
+    try {
+        
+        const error = ValidateRequest<CartRequestInput>(req.body, CartRequestSchema);
+        if (error) {
+             res.status(400).json({ message: 'Bad Request', error });
+             return;
+        }
+        
+        const input: CartRequestInput = req.body;   
+        const cart = await service.CreateCart(input, repo)
+        res.status(200).json({ message: 'POST cart', cart });
+    } catch (error) {
+        next(error);
     }
-    
-    const input: CartRequestInput = req.body;   
-    const cart = await service.CreateCart(input, repo)
-    res.status(200).json({ message: 'POST cart', cart });
 });
 
 
